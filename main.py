@@ -76,7 +76,8 @@ async def start_command(client, message: Message):
         "/score — показать мои баллы\n"
         "/help — получить помощь\n\n"
         "Готов проверить свои знания? Нажми /quiz!",
-        parse_mode=enums.ParseMode.MARKDOWN
+        parse_mode=enums.ParseMode.MARKDOWN,
+        reply_markup=keyboards.main_keyboard
     )
 
 
@@ -92,7 +93,8 @@ async def help_command(client, message: Message):
         f"• Всего вопросов: {len(QUESTIONS)}\n"
         "• Баллы сохраняются в базе данных\n\n"
         "*Удачи!* 🍀",
-        parse_mode=enums.ParseMode.MARKDOWN
+        parse_mode=enums.ParseMode.MARKDOWN,
+        reply_markup=keyboards.main_keyboard
     )
 
 

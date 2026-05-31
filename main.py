@@ -125,22 +125,23 @@
 #
 # bot.run()
 
+
 from pyrogram import Client, filters, enums
 from pyrogram.types import Message, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 import json
 import config
 import database as db
+import buttons
+import keyboards
 import operator
 import random as rdm
 import time
 import operator as op
 import  quiz_logic
-import config
-import buttons
-import keyboards
 from custom_filters import button_filter
 
-
+bot = Client("quiz_bot", bot_token=config.BOT_TOKEN,
+             api_id=config.API_ID, api_hash=config.API_HASH)
 
 db.init_db()
 
@@ -188,8 +189,8 @@ async def send_question(client, chat_id, user_id, q_index):
     )
 
 
-@bot.on_message((filters=filters.command("start")) | button_filter(buttons.start_button))
-async def start_command(client: Client, message: Message):
+@bot.on_message(filters=filters.command("start") | button_filter(buttons.start_button))
+async def start_command(client, message: Message):
     user_id = message.from_user.id
     username = message.from_user.username or "unknown"
 
@@ -208,7 +209,7 @@ async def start_command(client: Client, message: Message):
     )
 
 
-@bot.on_message(filters.command("help")) | button_filter(buttons.help_button))
+@bot.on_message(filters.command("help") | button_filter(buttons.help_button))
 async def help_command(client, message: Message):
     await message.reply_text(
         "📖 *Правила викторины:*\n\n"
@@ -224,7 +225,7 @@ async def help_command(client, message: Message):
     )
 
 
-@bot.on_message(filters.command("score")) | button_filter(buttons.score_button))
+@bot.on_message(filters.command("score") | button_filter(buttons.score_button))
 async def score_command(client, message: Message):
     user_id = message.from_user.id
     score = db.get_score(user_id)
@@ -236,7 +237,7 @@ async def score_command(client, message: Message):
     )
 
 
-@bot.on_message(filters.command("quiz")) | button_filter(buttons.quiz_button))
+@bot.on_message(filters.command("quiz") | button_filter(buttons.quiz_button))
 async def quiz_start(client, message: Message):
     user_id = message.from_user.id
     username = message.from_user.username or "unknown"
@@ -255,10 +256,6 @@ async def quiz_start(client, message: Message):
 
     # Отправляем первый вопрос
     await send_question(client, message.chat.id, user_id, 0)
-
-
-
-
 
 @bot.on_callback_query()
 async def handle_callback(client, callback: CallbackQuery):

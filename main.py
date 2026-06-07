@@ -2,17 +2,24 @@
 from pyrogram import Client, filters, enums
 from pyrogram.types import Message, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 import json
-import config
+from dotenv import load_dotenv
+
+import os
+
 import database as db
 import buttons
 import keyboards
-import random as rdm
-import time
-import  quiz_logic
+
 from custom_filters import button_filter
 
-bot = Client("quiz_bot", bot_token=config.BOT_TOKEN,
-             api_id=config.API_ID, api_hash=config.API_HASH)
+load_dotenv()
+
+bot = Client(
+    name = "quiz_bot",
+    api_id=os.getenv("API_ID"),
+    api_hash=os.getenv("API_HASH"),
+    bot_token=os.getenv("BOT_TOKEN"),
+)
 
 db.init_db()
 
